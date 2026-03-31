@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+.wwebjs_auth/
+backend/memory.db
+node_modules/
+backend/venv/
+token.json
+credentials.json
+*.ogg
+*.mp3
