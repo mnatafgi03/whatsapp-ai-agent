@@ -8,7 +8,7 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        executablePath: process.env.CHROME_PATH || undefined,
+        executablePath: process.env.CHROME_PATH || 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     }
 });
@@ -28,9 +28,12 @@ client.on('disconnected', (reason) => {
     client.initialize();
 });
 
+const ALLOWED_NUMBER = '96176931343@c.us';
+
 client.on('message', async (msg) => {
     if (msg.fromMe) return;
     if (msg.from.endsWith('@g.us')) return;
+    if (msg.from !== ALLOWED_NUMBER) return;
 
     // Handle text messages
     if (msg.type === 'chat') {

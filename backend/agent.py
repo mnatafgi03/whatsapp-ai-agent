@@ -153,7 +153,7 @@ def execute_tool(name: str, args: dict) -> str:
 
 
 def get_response(from_number: str, message: str) -> str:
-    history = get_history(from_number)
+    history = get_history(from_number, limit=10)
 
     messages = [{'role': 'system', 'content': get_system_prompt()}]
     for msg in history:
@@ -161,13 +161,20 @@ def get_response(from_number: str, message: str) -> str:
         messages.append({'role': role, 'content': msg['parts'][0]['text']})
     messages.append({'role': 'user', 'content': message})
 
-    response = client.chat.completions.create(
-        model='llama3-8b-8192',
-        messages=messages,
-        tools=TOOLS,
-        tool_choice='auto',
-        max_tokens=500
-    )
+    try:
+        response = client.chat.completions.create(
+            model='llama-3.3-70b-versatile',
+            messages=messages,
+            tools=TOOLS,
+            tool_choice='auto',
+            max_tokens=300
+        )
+    except Exception:
+        response = client.chat.completions.create(
+            model='llama-3.3-70b-versatile',
+            messages=messages,
+            max_tokens=300
+        )
 
     response_message = response.choices[0].message
 
@@ -189,9 +196,9 @@ def get_response(from_number: str, message: str) -> str:
             })
 
         final_response = client.chat.completions.create(
-            model='llama3-8b-8192',
+            model='llama-3.3-70b-versatile',
             messages=messages,
-            max_tokens=500
+            max_tokens=300
         )
         reply = final_response.choices[0].message.content
 
