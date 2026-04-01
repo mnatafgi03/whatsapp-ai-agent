@@ -2,14 +2,14 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const axios = require('axios');
 
-const PYTHON_BACKEND = 'http://localhost:5000';
+const PYTHON_BACKEND = process.env.PYTHON_BACKEND_URL || 'http://localhost:5000';
 
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        executablePath: process.env.CHROME_PATH || undefined,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     }
 });
 
